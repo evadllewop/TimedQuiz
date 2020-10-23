@@ -3,8 +3,6 @@ var quiz = document.getElementById("quiz");
 var introEl = document.getElementById("quizIntro");
 var qEl = document.getElementById("question");
 var timeEl = document.getElementById("timer");
-var counter = document.getElementById("counter");
-var timeGauge = document.getElementById("timeGauge");
 var scoreDiv = document.getElementById("scoreContainer");
 var choiceA = document.getElementById("A");
 var choiceB = document.getElementById("B");
@@ -12,13 +10,11 @@ var choiceC = document.getElementById("C");
 var answerStat = document.getElementById("answerStat");
 var highScoresEl = document.getElementById("highScores");
 
-var highScores = document.createElement('a');
-highScores.textContent = "View Highscores";
-highScoresEl.appendChild(highScores);
-highScores.href = "#";
-highScores.setAttribute("style", "margin-top:40px; font-size:16px; text-align:center;");
-
-
+// var highScores = document.createElement('a');
+// highScores.textContent = "View Highscores";
+// highScoresEl.appendChild(highScores);
+// highScores.addEventListener("click", renderScores);
+// highScores.setAttribute("align", "center");
 
 var h1El = document.createElement("h1");
 h1El.textContent = "My Javascript Quiz";
@@ -26,7 +22,7 @@ introEl.appendChild(h1El);
 h1El.setAttribute("style", "margin-bottom:20px; font-size:50px; text-align:center;");
 
 var pEl = document.createElement("p");
-pEl.textContent = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt nobis esse repudiandae eaque reiciendis velit eveniet odit inventore, minima ex autem rem numquam quaerat neque animi ullam assumenda magnam? Porro!";
+pEl.textContent = "This is a timed Javascript quiz with multiple choice answers. Try to answer them before the time runs out! You will be shown how you many you got wrong or correct at the end of the quiz. Then enter your initials to save you score!";
 introEl.append(pEl);
 pEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
 
@@ -77,20 +73,34 @@ var questions = [
 var lastQuestion = questions.length - 1;
 var runningQuestion = 0;
 var questionTime = 10;
-var count = 0;
-const gaugeWidth = 150; // 150px
-const gaugeUnit = gaugeWidth / questionTime;
-let TIMER;
-// var score = 0;
+var score = 0;
+var timer;
 
 
 buttonEl.addEventListener("click", startQuiz);
 
 function startQuiz() {
+
     introEl.style.display = "none";
     setTime();
     renderQuestion();
     quiz.style.display = "block";
+}
+var secondsLeft = 30;
+
+function setTime() {
+
+    timer = setInterval(function () {
+        secondsLeft--;
+        timeEl.textContent = secondsLeft + " seconds remaining";
+        timeEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
+
+        if (secondsLeft === 0) {
+            clearInterval(timer);
+            scoreRender();
+        }
+
+    }, 1000);
 }
 
 function renderQuestion() {
@@ -105,22 +115,22 @@ function renderQuestion() {
 }
 
 function checkAnswer(answer) {
-    console.log(answer);
-    var score = 0;
+
     if (questions[runningQuestion].correct == answer) {
 
         score++;
-        alert(score);
         answerIsCorrect();
     } else {
         answerIsWrong();
     }
-    count = 0;
+
     if (runningQuestion < lastQuestion) {
         runningQuestion++;
         renderQuestion();
     } else {
+        clearInterval(timer);
         scoreRender();
+        timeEl.style.display = "none";
     }
 }
 
@@ -129,7 +139,7 @@ function answerIsCorrect() {
     var answerCorrect = document.createElement("p");
     answerCorrect.textContent = "Correct";
     answerStat.appendChild(answerCorrect);
-    answerCorrect.setAttribute("style", "color:green; font-size:24px; margin-top:20px; text-align:center;");
+    answerCorrect.setAttribute("style", "color:green; font-size:24px; text-align:center;");
     var answerTime = 1;
     var answerInterval = setInterval(function () {
         answerTime--;
@@ -138,7 +148,7 @@ function answerIsCorrect() {
             clearInterval(answerInterval);
             answerCorrect.style.display = "none";
         }
-    }, 500);
+    }, 1000);
 }
 
 function answerIsWrong() {
@@ -147,6 +157,7 @@ function answerIsWrong() {
     answerWrong.textContent = "Wrong";
     answerStat.appendChild(answerWrong);
     answerWrong.setAttribute("style", "color:orange; font-size:24px; text-align:center;");
+
     var answerTime = 1;
     var answerInterval = setInterval(function () {
         answerTime--;
@@ -155,33 +166,46 @@ function answerIsWrong() {
             clearInterval(answerInterval);
             answerWrong.style.display = "none";
         }
-    }, 500);
-}
-
-var secondsLeft = 5;
-
-function setTime() {
-    var timerInterval = setInterval(function () {
-        secondsLeft--;
-        timeEl.textContent = secondsLeft + " seconds remaining";
-        timeEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
-
-        if (secondsLeft === 0) {
-            clearInterval(timerInterval);
-            scoreRender();
-            timeEl.style.display = "none";
-        }
-
     }, 1000);
 }
 
 function scoreRender() {
 
+    timeEl.style.display = "none";
     scoreDiv.style.display = "block";
     quiz.style.display = "none";
-    scoreDiv.innerHTML = "You're done! Let's see how you did...";
+    scoreDiv.setAttribute("align", "center");
+
+    var doneEl = document.createElement("p");
+    doneEl.textContent = "You're done! Let's see how you did...";
+    scoreDiv.append(doneEl);
+    doneEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
+
+    var scoreEl = document.createElement('h2');
+    scoreEl.textContent = "You got " + score + " out of 5 answers correct";
+    scoreDiv.append(scoreEl);
+    scoreEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
+
+    var hr = document.createElement("hr");
+    scoreDiv.append(hr);
+
+    var i = document.createElement("input");
+    i.setAttribute('type', "text");
+    i.setAttribute('name', "username");
+    i.setAttribute('placeholder', "Enter initials");
+    i.setAttribute("style", "margin-bottom:20px;")
+    scoreDiv.append(i);
+
+    var s = document.createElement("button");
+    s.textContent = "Submit";
+    s.setAttribute('type', "submit");
+    s.setAttribute('value', "Submit");
+    s.setAttribute("style", "font-size:12px; width:auto");
+    scoreDiv.append(s);
+
+    s.addEventListener("click", renderScores);
 }
 
-
-
-
+function renderScores() {
+    alert("about as far as I could get");
+}
