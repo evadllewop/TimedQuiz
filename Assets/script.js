@@ -16,16 +16,19 @@ var highScoresEl = document.getElementById("highScores");
 // highScores.addEventListener("click", renderScores);
 // highScores.setAttribute("align", "center");
 
+// quiz title
 var h1El = document.createElement("h1");
 h1El.textContent = "My Javascript Quiz";
 introEl.appendChild(h1El);
 h1El.setAttribute("style", "margin-bottom:20px; font-size:50px; text-align:center;");
 
+// quiz description
 var pEl = document.createElement("p");
 pEl.textContent = "This is a timed Javascript quiz with multiple choice answers. Try to answer them before the time runs out! You will be shown how you many you got wrong or correct at the end of the quiz. Then enter your initials to save you score!";
 introEl.append(pEl);
 pEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
 
+// start quiz button
 var buttonEl = document.createElement("button");
 buttonEl.textContent = "Start Quiz";
 introEl.append(buttonEl);
@@ -36,6 +39,7 @@ h2El.textContent = "What the fuck am I doing?";
 qEl.append(h2El);
 qEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
 
+// array of questions
 var questions = [
     {
         question: "Which of the following are capabilities of functions in JavaScript?",
@@ -79,6 +83,7 @@ var timer;
 
 buttonEl.addEventListener("click", startQuiz);
 
+// start quiz
 function startQuiz() {
 
     introEl.style.display = "none";
@@ -86,8 +91,9 @@ function startQuiz() {
     renderQuestion();
     quiz.style.display = "block";
 }
-var secondsLeft = 30;
 
+// timer start
+var secondsLeft = 30;
 function setTime() {
 
     timer = setInterval(function () {
@@ -103,6 +109,7 @@ function setTime() {
     }, 1000);
 }
 
+// questions start
 function renderQuestion() {
 
     var q = questions[runningQuestion];
@@ -113,11 +120,10 @@ function renderQuestion() {
     choiceB.innerHTML = q.choiceB;
     choiceC.innerHTML = q.choiceC;
 }
-
+//  check to see if answers are correct or wrong
 function checkAnswer(answer) {
 
     if (questions[runningQuestion].correct == answer) {
-
         score++;
         answerIsCorrect();
     } else {
@@ -134,6 +140,7 @@ function checkAnswer(answer) {
     }
 }
 
+// if answer is correct, display 'correct' and increase score
 function answerIsCorrect() {
 
     var answerCorrect = document.createElement("p");
@@ -151,6 +158,7 @@ function answerIsCorrect() {
     }, 1000);
 }
 
+// if answer is wrong, display 'wrong'
 function answerIsWrong() {
 
     var answerWrong = document.createElement("p");
@@ -169,6 +177,7 @@ function answerIsWrong() {
     }, 1000);
 }
 
+// let user know the quiz is over and display user score
 function scoreRender() {
 
     timeEl.style.display = "none";
@@ -176,11 +185,13 @@ function scoreRender() {
     quiz.style.display = "none";
     scoreDiv.setAttribute("align", "center");
 
+    //alert user that the quiz is over
     var doneEl = document.createElement("p");
     doneEl.textContent = "You're done! Let's see how you did...";
     scoreDiv.append(doneEl);
     doneEl.setAttribute("style", "margin-bottom:20px; text-align:center;");
 
+    // alert user of their score
     var scoreEl = document.createElement('h2');
     scoreEl.textContent = "You got " + score + " out of 5 answers correct";
     scoreDiv.append(scoreEl);
@@ -189,6 +200,7 @@ function scoreRender() {
     var hr = document.createElement("hr");
     scoreDiv.append(hr);
 
+    //form input
     var i = document.createElement("input");
     i.setAttribute('type', "text");
     i.setAttribute('name', "username");
@@ -207,5 +219,5 @@ function scoreRender() {
 }
 
 function renderScores() {
-    alert("about as far as I could get");
+    alert("about as far as I could get :(");
 }

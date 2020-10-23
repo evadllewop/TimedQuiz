@@ -11,7 +11,7 @@ There is a 30 second timer for all 5 questions. Whether the timer expires or all
 
 # Link to deployed application
 
-https://evadllewop.github.io/PasswordGenerator/
+https://evadllewop.github.io/TimedQuiz/
 
 # Screenshot of deployed application
 

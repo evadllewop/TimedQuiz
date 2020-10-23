@@ -8,12 +8,15 @@ body {
 }
 
 #container{
-
     width: 800px;
     height:600px;
     padding: 40px;
     margin: auto;
     margin-top: 20px;
+}
+
+#scoreContainer {
+  margin-top:0;
 }
 
   #question {
@@ -38,7 +41,6 @@ body {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
   }
 
@@ -53,9 +55,4 @@ body {
     background-color:#314453;
     text-decoration: none;
   }
-
-  #scoreContainer {
-    margin-top:0;
-  }
-
  
